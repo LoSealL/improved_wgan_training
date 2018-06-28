@@ -194,7 +194,7 @@ def generate_image(frame, true_dist):
     samples = session.run(fixed_noise_samples)
     lib.save_images.save_images(
         samples.reshape((128, 28, 28)), 
-        'samples_{}.png'.format(frame)
+        'mnist/samples_{}.png'.format(frame)
     )
 
 # Dataset iterator
@@ -207,11 +207,11 @@ def inf_train_gen():
 # Train loop
 with tf.Session() as session:
 
-    session.run(tf.initialize_all_variables())
+    session.run(tf.global_variables_initializer())
 
     gen = inf_train_gen()
 
-    for iteration in xrange(ITERS):
+    for iteration in range(ITERS):
         start_time = time.time()
 
         if iteration > 0:
@@ -221,8 +221,8 @@ with tf.Session() as session:
             disc_iters = 1
         else:
             disc_iters = CRITIC_ITERS
-        for i in xrange(disc_iters):
-            _data = gen.next()
+        for i in range(disc_iters):
+            _data = next(gen)
             _disc_cost, _ = session.run(
                 [disc_cost, disc_train_op],
                 feed_dict={real_data: _data}
@@ -248,6 +248,6 @@ with tf.Session() as session:
 
         # Write logs every 100 iters
         if (iteration < 5) or (iteration % 100 == 99):
-            lib.plot.flush()
+            lib.plot.flush('mnist')
 
         lib.plot.tick()

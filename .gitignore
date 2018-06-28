@@ -1,5 +1,10 @@
 .DS_Store
 push
+cifar/
+cifar_resnet/
+mnist/
+toy/
+language/
 
 *.pyc
 *.pkl
