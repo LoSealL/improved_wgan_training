@@ -160,7 +160,7 @@ def generate_image(frame, true_dist):
 samples_100 = Generator(100)
 def get_inception_score():
     all_samples = []
-    for i in range(10):
+    for _ in range(10):
         all_samples.append(session.run(samples_100))
     all_samples = np.concatenate(all_samples, axis=0)
     all_samples = ((all_samples+1.)*(255./2)).astype('int32')
